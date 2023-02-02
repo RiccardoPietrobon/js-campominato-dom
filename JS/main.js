@@ -46,6 +46,20 @@ my_button.addEventListener(
  */
 function generazione_griglia(grid, dimensione_grid) {
 
+    /*     //inserisco le bombe
+        const boxbombs = [];
+    
+        while (boxbombs.length < 16) {
+            const random_number = Math.floor(Math.random() * 100) + 1;
+    
+            if (!boxbombs.includes(random_number)) {
+                boxbombs.push(random_number);
+            }
+        }
+        console.log(boxbombs);
+    
+     */
+
     //griglia vuota
     grid.innerHTML = "";
 
@@ -62,11 +76,11 @@ function generazione_griglia(grid, dimensione_grid) {
         //aggiungo le classi desiderate
         my_square.classList.add("square");
 
-        if (dimensione_grid == "100") {
+        if (dimensione_grid == parseInt("100")) {
 
             my_square.classList.add("square_10");
 
-        } else if (dimensione_grid == "81") {
+        } else if (dimensione_grid == parseInt("81")) {
 
             my_square.classList.add("square_9");
 
@@ -78,6 +92,18 @@ function generazione_griglia(grid, dimensione_grid) {
 
         //aggiungo il numero
         my_square.append(square_text);
+
+        //inserisco le bombe
+        const boxbombs = [];
+
+        while (boxbombs.length < 16) {
+            const random_number = Math.floor(Math.random() * 10) + 1;
+
+            if (!boxbombs.includes(random_number)) {
+                boxbombs.push(random_number);
+            }
+        }
+        console.log(boxbombs);
 
         //funzione click
         my_square.addEventListener(
@@ -93,20 +119,3 @@ function generazione_griglia(grid, dimensione_grid) {
 
 }
 
-/* 
-* funzione per 16 numeri casuali
-*
-* */
-
-function bombs(dimensione_grid) {
-    const boxbombs = [];
-
-    while (boxbombs.lenght < 16) {
-        random_number = Math.floor(Math.random() * dimensione_grid) + 1;
-
-        if (!boxbombs.includes(random_number)) {
-            boxbombs.push(random_number);
-        }
-    }
-
-}
