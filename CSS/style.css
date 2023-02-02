@@ -1,0 +1,35 @@
+.griglia {
+    width: 1000px;
+    height: 1000px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+.square {
+    color: white;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square_10 {
+    width: calc(1000px / 10);
+    height: calc(1000px / 10);
+}
+
+.square_9 {
+    width: calc(1000px / 9);
+    height: calc(1000px / 9);
+}
+
+.square_7 {
+    width: calc(1000px / 7);
+    height: calc(1000px / 7);
+}
+
+.square_active {
+    color: black;
+    background-color: coral;
+}
