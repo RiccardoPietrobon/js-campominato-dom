@@ -23,19 +23,26 @@
 /************     CODICE     ********* */
 
 const my_button = document.getElementById("push");
+let bombe;
+
+let is_game_over = false;
+
 
 my_button.addEventListener(
     "click",
-    function () {
-
-        const my_grid = document.getElementById("box");
-
-        const chose = document.getElementById("tipo_di_griglia").value;
-
-        generazione_griglia(my_grid, chose);
-
-    }
+    startGame
 )
+
+function startGame() {
+
+    const my_grid = document.getElementById("box");
+
+    const chose = document.getElementById("tipo_di_griglia");
+
+    generazione_griglia(my_grid, chose.value);
+
+    is_game_over = false;
+}
 
 /*********** FUNZIONI **********/
 /* 
@@ -46,22 +53,12 @@ my_button.addEventListener(
  */
 function generazione_griglia(grid, dimensione_grid) {
 
-    /*     //inserisco le bombe
-        const boxbombs = [];
-    
-        while (boxbombs.length < 16) {
-            const random_number = Math.floor(Math.random() * 100) + 1;
-    
-            if (!boxbombs.includes(random_number)) {
-                boxbombs.push(random_number);
-            }
-        }
-        console.log(boxbombs);
-    
-     */
-
     //griglia vuota
     grid.innerHTML = "";
+
+    bombe = generaBombe(1, dimensione_grid);
+    console.log(bombe);
+
 
     //ciclo per generare il numero di celle desiderato
     for (let i = 0; i < dimensione_grid; i++) {
@@ -72,50 +69,118 @@ function generazione_griglia(grid, dimensione_grid) {
 
         //aggiungo un div
         const my_square = document.createElement("div");
-
-        //aggiungo le classi desiderate
         my_square.classList.add("square");
 
-        if (dimensione_grid == parseInt("100")) {
+        let squareNumber = 100;
 
-            my_square.classList.add("square_10");
+        //aggiungo le classi desiderate
 
-        } else if (dimensione_grid == parseInt("81")) {
-
-            my_square.classList.add("square_9");
-
-        } else {
+        if (dimensione_grid == 49) {
 
             my_square.classList.add("square_7");
+            squareNumber = 49;
+
+        } else if (dimensione_grid == 81) {
+
+            my_square.classList.add("square_9");
+            squareNumber = 81;
 
         }
+
 
         //aggiungo il numero
         my_square.append(square_text);
-
-        //inserisco le bombe
-        const boxbombs = [];
-
-        while (boxbombs.length < 16) {
-            const random_number = Math.floor(Math.random() * 10) + 1;
-
-            if (!boxbombs.includes(random_number)) {
-                boxbombs.push(random_number);
-            }
-        }
-        console.log(boxbombs);
 
         //funzione click
         my_square.addEventListener(
             "click",
             function () {
-                this.classList.toggle("square_active");
-                console.log(this.innerHTML);
+                if (!is_game_over) {
+                    // PRENDO L'INDICE DELLA CELLA CORRENTE
+                    const cellIndex = parseInt(this.getAttribute("data-index"));
+
+                    // PRENDO TUTTE LE CELLE CLICCATE
+                    const activeSquares = document.querySelectorAll(".square.active");
+
+                    // SE LA CELLA CLICCATA è UNA BOMBA
+                    if (bombe.includes(cellIndex)) {
+
+                        // DO LA CLASSE BOMBA E TERMINO IL GIOCO
+                        this.classList.add("bomb");
+                        gameOver(activeSquares, false);
+                    } else {
+
+                        // ALTRIMENTI DO LA CLASSE ACTIVE
+                        this.classList.add("active");
+                    }
+
+                    // SE ERA L'ULTIMA CELLA CLICCABILE
+                    console.log(activeSquares.length);
+                    console.log(squareNumber - bombe.length);
+
+                    if (activeSquares.length == squareNumber - bombe.length - 1) {
+                        gameOver(activeSquares, true);
+                    }
+                }
             }
         )
 
         grid.append(my_square);
+
+
+    }
+}
+
+
+
+/**
+ * genera un array casuale di 16 "bombe" (interi) in un range prescelto
+ * 
+ * @param {int} min 
+ * @param {max} max 
+ * @return {int[]}
+ */
+function generaBombe(min, max) {
+    const boxbombs = [];
+
+    while (boxbombs.length < 16) {
+        const randomNumber = Math.floor(Math.random() * max - min + 1) + min;
+
+        if (!boxbombs.includes(randomNumber)) {
+            boxbombs.push(randomNumber);
+        }
     }
 
+    return boxbombs;
 }
+
+
+
+
+/**
+ * funzione che termina il gioco
+ * 
+ * @param {HTMLElement[]} activeSquares 
+ * @param {boolean} userWon 
+ */
+function gameOver(activeSquares, userWon) {
+    is_game_over = true;
+
+    console.log(activeSquares);
+    if (userWon) {
+        alert("Congratulazione, hai vinto!\nHai totalizzato " + activeSquares.length + " punti.");
+    } else {
+        alert("Peccato, hai perso!\nHai totalizzato " + activeSquares.length + " punti.");
+    }
+
+    const squares = document.querySelectorAll(".square");
+
+    for (const square of squares) {
+        const squareIndex = parseInt(square.getAttribute("data-index"));
+        if (bombe.includes(squareIndex)) {
+            square.classList.add("bomb");
+        }
+    }
+}
+
 

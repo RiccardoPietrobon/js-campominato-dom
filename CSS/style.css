@@ -7,6 +7,8 @@
 }
 
 .square {
+    width: calc(1000px / 10);
+    height: calc(1000px / 10);
     color: white;
     border: 2px solid white;
     display: flex;
@@ -14,22 +16,21 @@
     align-items: center;
 }
 
-.square_10 {
-    width: calc(1000px / 10);
-    height: calc(1000px / 10);
-}
-
-.square_9 {
+.square.square_9 {
     width: calc(1000px / 9);
     height: calc(1000px / 9);
 }
 
-.square_7 {
+.square.square_7 {
     width: calc(1000px / 7);
     height: calc(1000px / 7);
 }
 
-.square_active {
+.square.active {
     color: black;
     background-color: coral;
+}
+
+.square.bomb {
+    background-color: red;
 }
